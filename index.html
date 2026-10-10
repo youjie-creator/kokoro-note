@@ -1,1 +1,672 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f8fa">
+<title>こころの整理ノート</title>
+<style>
+:root {
+  --bg: #f7f8fa;
+  --card: #ffffff;
+  --text: #27313b;
+  --muted: #697582;
+  --accent: #587eaa;
+  --accent-light: #eaf1f8;
+  --border: #dfe4ea;
+  --danger: #b94b4b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans JP", sans-serif;
+  line-height: 1.7;
+}
+header {
+  padding: 22px 20px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner, main {
+  max-width: 620px;
+  margin: 0 auto;
+}
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 3px;
+}
+main { padding: 24px 18px 50px; }
+h1 { font-size: 24px; line-height: 1.5; margin: 0 0 12px; }
+h2 { font-size: 19px; margin: 0 0 16px; }
+p { margin: 8px 0 16px; }
+.muted { color: var(--muted); font-size: 14px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(30, 50, 70, .03);
+}
+label {
+  display: block;
+  font-weight: 600;
+  margin: 18px 0 8px;
+}
+textarea, input {
+  width: 100%;
+  border: 1px solid #cbd3dc;
+  border-radius: 10px;
+  padding: 13px 14px;
+  font: inherit;
+  font-size: 16px;
+  background: #fff;
+  color: var(--text);
+}
+textarea {
+  min-height: 170px;
+  resize: vertical;
+  line-height: 1.7;
+}
+textarea:focus, input:focus {
+  outline: 2px solid #9cb9d8;
+  border-color: var(--accent);
+}
+button {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 17px;
+  cursor: pointer;
+}
+button:focus-visible {
+  outline: 3px solid #9cb9d8;
+  outline-offset: 2px;
+}
+.primary {
+  background: var(--accent);
+  color: white;
+}
+.secondary {
+  background: var(--accent-light);
+  color: #365b82;
+}
+.ghost {
+  background: #f0f2f5;
+  color: var(--text);
+}
+.danger {
+  color: var(--danger);
+  background: #fff0f0;
+}
+button:disabled { opacity: .4; cursor: default; }
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.actions button { flex: 1; }
+.full { width: 100%; margin-top: 12px; }
+.progress {
+  height: 6px;
+  background: #e5eaf0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin: 10px 0 22px;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width .2s;
+}
+.question-number {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.question {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.answer-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-top: 8px;
+}
+.entry {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  padding: 16px;
+  margin: 12px 0;
+}
+.entry-date {
+  font-size: 12px;
+  color: var(--muted);
+}
+.entry-title {
+  font-weight: 700;
+  margin: 7px 0 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.entry-buttons {
+  display: flex;
+  gap: 8px;
+}
+.entry-buttons button { flex: 1; }
+.review-item {
+  border-top: 1px solid var(--border);
+  padding: 16px 0;
+}
+.review-item:first-child { border-top: 0; }
+.review-question {
+  font-weight: 700;
+  font-size: 15px;
+}
+.review-answer {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 8px 0 12px;
+}
+.small-button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.notice {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--accent-light);
+  font-size: 13px;
+  margin: 14px 0;
+}
+.empty {
+  text-align: center;
+  padding: 28px 12px;
+  color: var(--muted);
+}
+.back-link {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  padding: 0;
+  margin-bottom: 18px;
+}
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 0 20px 28px;
+}
+.hidden { display: none !important; }
+@media (max-width: 380px) {
+  main { padding: 18px 12px 40px; }
+  .card { padding: 17px; }
+  .actions { gap: 7px; }
+  .actions button { padding: 11px 8px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">こころの整理ノート</div>
+    <div class="subtitle">自分の心と向き合い、次の一歩を考える</div>
+  </div>
+</header>
 
+<main>
+  <section id="home">
+    <h1>こころを整理する</h1>
+    <p>今気になっていることを、ひとつずつ整理してみましょう。</p>
+    <div class="card">
+      <h2>新しく整理する</h2>
+      <p class="muted">9つの問いかけを通じて、感情や物事の見方、これからの行動を考えます。</p>
+      <button class="primary full" onclick="startNew()">新しい悩みを整理する</button>
+    </div>
+    <div class="card">
+      <h2>過去の悩みを振り返る</h2>
+      <p class="muted">以前に整理した内容を読み返せます。</p>
+      <button class="secondary full" onclick="showHistory()">過去の悩み一覧を見る</button>
+      <p id="homeCount" class="muted"></p>
+    </div>
+    <div class="notice">このアプリは、考えを整理するためのノートです。回答に正解はありません。自分のペースで進めてください。</div>
+  </section>
+
+  <section id="problemScreen" class="hidden">
+    <button class="back-link" onclick="goHome()">← ホームに戻る</button>
+    <h1>今、気になっていること</h1>
+    <p>あなたが感じている心理的な困難について、自由に書いてください。</p>
+    <div class="card">
+      <label for="problemInput">悩み・困難</label>
+      <textarea id="problemInput" placeholder="今、何が気になっていますか？"></textarea>
+      <button class="primary full" onclick="beginQuestions()">質問に進む</button>
+    </div>
+  </section>
+
+  <section id="questionScreen" class="hidden">
+    <button class="back-link" onclick="backToProblem()">← 悩みの入力に戻る</button>
+    <div class="muted" id="progressText"></div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="card">
+      <div class="question-number" id="questionNumber"></div>
+      <div class="question" id="questionText"></div>
+      <label for="answerInput">あなたの回答</label>
+      <textarea id="answerInput" placeholder="思いついたことを自由に書いてください。"></textarea>
+      <div class="actions">
+        <button class="ghost" id="prevButton" onclick="previousQuestion()">戻る</button>
+        <button class="primary" id="nextButton" onclick="nextQuestion()">次へ</button>
+      </div>
+    </div>
+    <p class="muted">回答はこの端末のブラウザ内に一時保存されます。保存前に内容を確認できます。</p>
+  </section>
+
+  <section id="reviewScreen" class="hidden">
+    <button class="back-link" onclick="editLastQuestion()">← 最後の質問に戻る</button>
+    <h1>回答を確認する</h1>
+    <p>保存する前に、悩みと回答を振り返ってみましょう。必要であれば、個別に書き直せます。</p>
+    <div class="card">
+      <h2>あなたが感じている心理的困難</h2>
+      <div id="reviewProblem" class="answer-text"></div>
+      <button class="secondary small-button full" onclick="editProblem()">悩みの文章を修正する</button>
+    </div>
+    <div class="card">
+      <div id="reviewAnswers"></div>
+    </div>
+    <div class="notice">保存すると、この記録は編集できなくなります。保存後も、過去の悩み一覧から読み返したり、削除したりできます。</div>
+    <button class="primary full" onclick="saveRecord()">この内容を保存する</button>
+    <button class="ghost full" onclick="goHome()">保存せずにホームへ戻る</button>
+  </section>
+
+  <section id="historyScreen" class="hidden">
+    <button class="back-link" onclick="goHome()">← ホームに戻る</button>
+    <h1>過去の悩み</h1>
+    <p class="muted">保存した記録は、この端末のブラウザ内に保管されます。</p>
+    <div id="historyList"></div>
+  </section>
+
+  <section id="detailScreen" class="hidden">
+    <button class="back-link" onclick="showHistory()">← 過去の悩み一覧に戻る</button>
+    <h1>振り返り</h1>
+    <div class="card">
+      <div class="entry-date" id="detailDate"></div>
+      <h2>あなたが感じていた心理的困難</h2>
+      <div id="detailProblem" class="answer-text"></div>
+    </div>
+    <div class="card" id="detailAnswers"></div>
+    <button class="danger full" onclick="deleteCurrentRecord()">この記録を削除する</button>
+  </section>
+</main>
+
+<footer>こころの整理ノート</footer>
+
+<script>
+const QUESTIONS = [
+  "あなたが感じている心理的困難は？",
+  "そこにある感情は？",
+  "その感情はあなたに何をさせようとしている？",
+  "その感情を活用するならば、何をするべき？",
+  "その感情はどういう物事の見方で生じた？",
+  "見方は変えられる？（偏りはない？）",
+  "残る感情はある？",
+  "残る感情は受容して前に進める？",
+  "あらためて、何をすべきだと思う？"
+];
+
+const DB_NAME = "kokoroNoteDB";
+const STORE_NAME = "records";
+let db = null;
+let currentStep = 0;
+let draftProblem = "";
+let draftAnswers = Array(QUESTIONS.length).fill("");
+let currentRecordId = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (!("indexedDB" in window)) {
+      reject(new Error("このブラウザは端末内保存に対応していません。"));
+      return;
+    }
+    const request = indexedDB.open(DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const database = request.result;
+      if (!database.objectStoreNames.contains(STORE_NAME)) {
+        database.createObjectStore(STORE_NAME, { keyPath: "id" });
+      }
+    };
+    request.onsuccess = () => {
+      db = request.result;
+      resolve(db);
+    };
+    request.onerror = () => reject(request.error);
+  });
+}
+
+function dbRequest(mode, action) {
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      reject(new Error("保存領域を開けませんでした。"));
+      return;
+    }
+    const tx = db.transaction(STORE_NAME, mode);
+    const store = tx.objectStore(STORE_NAME);
+    const request = action(store);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+    tx.onabort = () => reject(tx.error || new Error("処理に失敗しました。"));
+  });
+}
+
+function getAllRecords() {
+  return dbRequest("readonly", store => store.getAll());
+}
+function putRecord(record) {
+  return dbRequest("readwrite", store => store.put(record));
+}
+function getRecord(id) {
+  return dbRequest("readonly", store => store.get(id));
+}
+function removeRecord(id) {
+  return dbRequest("readwrite", store => store.delete(id));
+}
+
+const SCREEN_IDS = [
+  "home", "problemScreen", "questionScreen", "reviewScreen",
+  "historyScreen", "detailScreen"
+];
+
+function showScreen(id) {
+  SCREEN_IDS.forEach(screenId => {
+    document.getElementById(screenId).classList.toggle("hidden", screenId !== id);
+  });
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  showScreen("home");
+  updateHomeCount();
+}
+
+function startNew() {
+  draftProblem = "";
+  draftAnswers = Array(QUESTIONS.length).fill("");
+  currentStep = 0;
+  document.getElementById("problemInput").value = "";
+  showScreen("problemScreen");
+}
+
+function backToProblem() {
+  draftAnswers[currentStep] = document.getElementById("answerInput").value;
+  document.getElementById("problemInput").value = draftProblem;
+  showScreen("problemScreen");
+}
+
+function beginQuestions() {
+  const problem = document.getElementById("problemInput").value.trim();
+  if (!problem) {
+    alert("まず、悩みや心理的困難を入力してください。");
+    return;
+  }
+  draftProblem = problem;
+  currentStep = 0;
+  renderQuestion();
+  showScreen("questionScreen");
+}
+
+function renderQuestion() {
+  document.getElementById("progressText").textContent =
+    `質問 ${currentStep + 1} / ${QUESTIONS.length}`;
+  document.getElementById("progressBar").style.width =
+    `${((currentStep + 1) / QUESTIONS.length) * 100}%`;
+  document.getElementById("questionNumber").textContent =
+    `QUESTION ${String(currentStep + 1).padStart(2, "0")}`;
+  document.getElementById("questionText").textContent = QUESTIONS[currentStep];
+  document.getElementById("answerInput").value = draftAnswers[currentStep];
+  document.getElementById("prevButton").disabled = currentStep === 0;
+  document.getElementById("nextButton").textContent =
+    currentStep === QUESTIONS.length - 1 ? "回答を確認する" : "次へ";
+}
+
+function previousQuestion() {
+  draftAnswers[currentStep] = document.getElementById("answerInput").value;
+  if (currentStep > 0) currentStep--;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  draftAnswers[currentStep] = document.getElementById("answerInput").value;
+  if (currentStep < QUESTIONS.length - 1) {
+    currentStep++;
+    renderQuestion();
+  } else {
+    renderReview();
+    showScreen("reviewScreen");
+  }
+}
+
+function editLastQuestion() {
+  currentStep = QUESTIONS.length - 1;
+  renderQuestion();
+  showScreen("questionScreen");
+}
+
+function editProblem() {
+  document.getElementById("problemInput").value = draftProblem;
+  showScreen("problemScreen");
+}
+
+function renderReview() {
+  document.getElementById("reviewProblem").textContent = draftProblem;
+  const container = document.getElementById("reviewAnswers");
+  container.replaceChildren();
+
+  QUESTIONS.forEach((question, index) => {
+    const item = document.createElement("div");
+    item.className = "review-item";
+
+    const title = document.createElement("div");
+    title.className = "review-question";
+    title.textContent = `${index + 1}. ${question}`;
+
+    const answer = document.createElement("div");
+    answer.className = "review-answer";
+    answer.textContent = draftAnswers[index].trim() || "（回答なし）";
+
+    const button = document.createElement("button");
+    button.className = "secondary small-button";
+    button.textContent = "この回答を編集";
+    button.onclick = () => {
+      currentStep = index;
+      renderQuestion();
+      showScreen("questionScreen");
+    };
+
+    item.append(title, answer, button);
+    container.appendChild(item);
+  });
+}
+
+async function saveRecord() {
+  const record = {
+    id: makeId(),
+    savedAt: new Date().toISOString(),
+    problem: draftProblem,
+    answers: [...draftAnswers],
+    questions: [...QUESTIONS]
+  };
+
+  try {
+    await putRecord(record);
+    alert("記録を保存しました。");
+    currentRecordId = record.id;
+    goHome();
+  } catch (error) {
+    console.error(error);
+    alert("保存できませんでした。ブラウザの設定や空き容量をご確認ください。");
+  }
+}
+
+function makeId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+async function showHistory() {
+  showScreen("historyScreen");
+  const container = document.getElementById("historyList");
+  container.replaceChildren();
+
+  try {
+    const records = await getAllRecords();
+    records.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+
+    if (records.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "card empty";
+      empty.textContent = "保存された記録はまだありません。";
+      container.appendChild(empty);
+      return;
+    }
+
+    records.forEach(record => {
+      const entry = document.createElement("div");
+      entry.className = "entry";
+
+      const date = document.createElement("div");
+      date.className = "entry-date";
+      date.textContent = formatDate(record.savedAt);
+
+      const title = document.createElement("div");
+      title.className = "entry-title";
+      title.textContent = record.problem.length > 100
+        ? record.problem.slice(0, 100) + "…" : record.problem;
+
+      const buttons = document.createElement("div");
+      buttons.className = "entry-buttons";
+
+      const viewButton = document.createElement("button");
+      viewButton.className = "secondary";
+      viewButton.textContent = "読み返す";
+      viewButton.onclick = () => showDetail(record.id);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "danger";
+      deleteButton.textContent = "削除";
+      deleteButton.onclick = () => deleteRecordById(record.id);
+
+      buttons.append(viewButton, deleteButton);
+      entry.append(date, title, buttons);
+      container.appendChild(entry);
+    });
+  } catch (error) {
+    console.error(error);
+    container.textContent = "記録を読み込めませんでした。";
+  }
+}
+
+async function showDetail(id) {
+  try {
+    const record = await getRecord(id);
+    if (!record) {
+      alert("この記録は見つかりませんでした。");
+      showHistory();
+      return;
+    }
+
+    currentRecordId = record.id;
+    document.getElementById("detailDate").textContent =
+      "保存日時：" + formatDate(record.savedAt);
+    document.getElementById("detailProblem").textContent = record.problem;
+
+    const container = document.getElementById("detailAnswers");
+    container.replaceChildren();
+
+    record.questions.forEach((question, index) => {
+      const item = document.createElement("div");
+      item.className = "review-item";
+
+      const title = document.createElement("div");
+      title.className = "review-question";
+      title.textContent = `${index + 1}. ${question}`;
+
+      const answer = document.createElement("div");
+      answer.className = "review-answer";
+      answer.textContent = record.answers[index]?.trim() || "（回答なし）";
+
+      item.append(title, answer);
+      container.appendChild(item);
+    });
+
+    showScreen("detailScreen");
+  } catch (error) {
+    console.error(error);
+    alert("記録を読み込めませんでした。");
+  }
+}
+
+async function deleteRecordById(id) {
+  if (!confirm("この記録を削除しますか？\n削除した記録は元に戻せません。")) return;
+
+  try {
+    await removeRecord(id);
+    if (currentRecordId === id) currentRecordId = null;
+    alert("記録を削除しました。");
+    showHistory();
+    updateHomeCount();
+  } catch (error) {
+    console.error(error);
+    alert("削除できませんでした。");
+  }
+}
+
+function deleteCurrentRecord() {
+  if (currentRecordId) deleteRecordById(currentRecordId);
+}
+
+function formatDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit"
+  }).format(date);
+}
+
+async function updateHomeCount() {
+  try {
+    const records = await getAllRecords();
+    document.getElementById("homeCount").textContent =
+      `保存済みの記録：${records.length}件`;
+  } catch (error) {
+    document.getElementById("homeCount").textContent = "";
+  }
+}
+
+async function initialize() {
+  try {
+    await openDB();
+    updateHomeCount();
+  } catch (error) {
+    console.error(error);
+    alert("端末内の保存機能を利用できません。このブラウザで開いているかご確認ください。");
+  }
+}
+
+initialize();
+</script>
+</body>
+  </html>
