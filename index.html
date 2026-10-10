@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f7f8fa">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png" sizes="192x192">
 <title>こころの整理ノート</title>
 <style>
 :root{--bg:#f7f8fa;--card:#fff;--text:#27313b;--muted:#697582;--accent:#587eaa;--accent-light:#eaf1f8;--border:#dfe4ea;--danger:#b94b4b}
@@ -182,6 +184,15 @@ function formatDate(value){const date=new Date(value);if(Number.isNaN(date.getTi
 async function updateHomeCount(){try{const records=await getAllRecords();document.getElementById("homeCount").textContent=`保存済みの記録：${records.length}件`;}catch(error){document.getElementById("homeCount").textContent="";}}
 async function initialize(){try{await openDB();updateHomeCount();}catch(error){console.error(error);alert("端末内の保存機能を利用できません。このブラウザで開いているかご確認ください。");}}
 initialize();
+
+// PWA: インストール後にアプリ画面として起動できるようにする
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(error => {
+      console.error("Service worker registration failed:", error);
+    });
+  });
+}
 </script>
 </body>
 </html>
